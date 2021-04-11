@@ -1,3 +1,5 @@
 const app = require('./src/config/config')
-console.log("Server Rodando.")
-app.listen(3000);
+
+app.listen(3000, () => {
+  console.log("Server Rodando.")
+});
