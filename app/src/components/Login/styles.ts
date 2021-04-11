@@ -5,9 +5,12 @@ import { globalColors } from '../../globalStyles';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: globalColors.backgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  gradientContainer: {
+    flex: 1
   },
 
   imageView: {
@@ -32,9 +35,6 @@ export const styles = StyleSheet.create({
   },
 
   fieldsView: {
-    borderColor: '#F00',
-    borderStyle: 'solid',
-    borderWidth: 1,
     width: '90%',
     height: '25%',
 
@@ -51,10 +51,6 @@ export const styles = StyleSheet.create({
   },
 
   btnsView: {
-    borderColor: '#F00',
-    borderStyle: 'solid',
-    borderWidth: 1,
-
     width: '90%',
     height: '17%',
 
@@ -98,7 +94,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
 
     color: '#FFF',
-    backgroundColor: '#F39789',
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     fontWeight: 'bold',
     fontSize: 15
   }

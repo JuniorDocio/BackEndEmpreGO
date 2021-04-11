@@ -10,6 +10,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { styles } from './styles';
+import {LinearGradient} from 'expo-linear-gradient';
+
+import { globalColors } from '../../globalStyles';
 
 export function Login() {
   const navigation = useNavigation();
@@ -31,45 +34,48 @@ export function Login() {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="height">
+      <LinearGradient colors={[globalColors.startGradientColor, globalColors.endGradientColor ]} style={styles.gradientContainer}>
+        <KeyboardAvoidingView style={styles.container} behavior="height">
+        
+            <View style={styles.imageView}>
 
-      <View style={styles.imageView}>
+            </View>
 
-      </View>
+          <View style={styles.fieldsView}>
+            <Text style={styles.title}>Faça seu Login!</Text>
+            <TextInput
+              placeholder="Usuário"
+              style={styles.formField}
+              placeholderTextColor="#FFF"
+              onChangeText={(text: string) => setUsername(text)}
+            >
+            </TextInput>
+            <Text style={[usernameWarning ? { display: 'flex' } : { display: 'none' }, styles.warningText]}>Usuário precisa ser preenchido.</Text>
 
+            <TextInput
+              placeholder="Senha"
+              style={styles.formField}
+              placeholderTextColor="#FFF"
+              secureTextEntry={true}
+              onChangeText={(text: string) => setPassword(text)}
+            ></TextInput>
+            <Text style={[passwordWarning ? { display: 'flex' } : { display: 'none' }, styles.warningText]}>Senha precisa ser preenchida.</Text>
 
-      <View style={styles.fieldsView}>
-        <Text style={styles.title}>Faça seu Login!</Text>
-        <TextInput
-          placeholder="Usuário"
-          style={styles.formField}
-          placeholderTextColor="#FFF"
-          onChangeText={(text: string) => setUsername(text)}
-        >
-        </TextInput>
-        <Text style={[usernameWarning ? { display: 'flex' } : { display: 'none' }, styles.warningText]}>Usuário precisa ser preenchido.</Text>
+          </View>
 
-        <TextInput
-          placeholder="Senha"
-          style={styles.formField}
-          placeholderTextColor="#FFF"
-          secureTextEntry={true}
-          onChangeText={(text: string) => setPassword(text)}
-        ></TextInput>
-        <Text style={[passwordWarning ? { display: 'flex' } : { display: 'none' }, styles.warningText]}>Senha precisa ser preenchida.</Text>
+          <View style={styles.btnsView}>
+            <TouchableOpacity style={styles.btnGO} onPress={login}>
+              <Text style={styles.btnGoText}>GO!</Text>
+            </TouchableOpacity>
 
-      </View>
+            <TouchableOpacity style={styles.btnSignUp} onPress={redirectToCadastro}>
+              <Text style={styles.btnSignUpText}>Cadastre-se</Text>
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.btnsView}>
-        <TouchableOpacity style={styles.btnGO} onPress={login}>
-          <Text style={styles.btnGoText}>GO!</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnSignUp} onPress={redirectToCadastro}>
-          <Text style={styles.btnSignUpText}>Cadastre-se</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          
+        </KeyboardAvoidingView>
+      </LinearGradient>
   );
 }
 
