@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('aula_php', 'root', '', {dialect: 'mysql', host: 'localhost'});
+
+const banco = process.env.PORT || 'mysql';
+const sequelize = new Sequelize('aula_php', 'root', '', {dialect: banco, host: 'localhost'});
 
 module.exports = sequelize;
