@@ -6,7 +6,7 @@ module.exports = {
         const userLogin = await usuario.findOne({ where: {email: req.body.email}});
 
         if(userLogin != null){
-            res.status(404).json({mensager: "Email já está em uso."})
+            res.status(401).json({mensager: "Email já está em uso."})
             return;
         }
         
@@ -26,7 +26,7 @@ module.exports = {
         const user = await usuario.findOne({ where: {email: email, senha: senha}});
 
         if (user === null) {
-            res.status(404).json({auth:false, token: false})
+            res.status(401).json({auth:false, token: false})
         } else {
             const id = user.id;
             const token = jwt.sign({id}, "123", {expiresIn: 3000})
