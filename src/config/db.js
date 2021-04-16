@@ -1,6 +1,12 @@
 const Sequelize = require('sequelize');
 
-const banco = process.env.DB_BANCO || 'mysql';
-const sequelize = new Sequelize('aula_php', 'root', '', {dialect: banco, host: 'localhost'});
+const { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_DIALECT, DB_HOST, DB_PORT } = require('./constants');
+
+const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, 
+  {
+    dialect: DB_DIALECT,
+    host: DB_HOST,
+    port: DB_PORT
+  });
 
 module.exports = sequelize;
