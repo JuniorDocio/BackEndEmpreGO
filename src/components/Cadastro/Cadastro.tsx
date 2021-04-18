@@ -18,9 +18,10 @@ import { globalColors } from '../../globalStyles';
 
 export function Cadastro() {
 
-  const [escolaridade, setEscolaridade] = useState('');
-  const [secureTextToggle, setSecureTextToggle] = useState(true);
+  const [escolaridade, setEscolaridade] = useState<string>('');
+  const [secureTextToggle, setSecureTextToggle] = useState<boolean>(true);
   const [eyePasswordIcon, setEyePasswordIcon] = useState<any>('eye');
+  const [btnSignUpDisabled, setBtnSignUpDisabled] = useState<boolean>(false);
 
   function signUp() {
 
@@ -105,7 +106,7 @@ export function Cadastro() {
         </View>
 
         <View style={styles.btnsView}>
-          <TouchableOpacity style={styles.btnSignUp} onPress={signUp}>
+          <TouchableOpacity style={styles.btnSignUp} onPress={signUp} disabled={ btnSignUpDisabled }>
             <Text style={styles.btnSignUpText}>Criar Conta!</Text>
           </TouchableOpacity>
 
