@@ -5,7 +5,7 @@ module.exports = {
     Cadastrar: async (req,res) => {
 
         console.log(req.body.nome_completo);
-        const userLogin = await usuario.findOne({ where: {nome_completo: req.body.nome_completo}});
+        const userLogin = await usuario.findOne({ where: {nome_usuario: req.body.nome_usuario}});
 
         if(userLogin != null){
             res.status(401).json({mensager: "Email já está em uso."})
@@ -24,8 +24,8 @@ module.exports = {
     },
 
     Login: async (req,res) => {
-        const {email,senha} = req.body;
-        const user = await usuario.findOne({ where: {email: email, senha: senha}});
+        const {nome_usuario,senha} = req.body;
+        const user = await usuario.findOne({ where: {nome_usuario: nome_usuario, senha: senha}});
 
         if (user === null) {
             res.status(401).json({auth:false, token: false})
