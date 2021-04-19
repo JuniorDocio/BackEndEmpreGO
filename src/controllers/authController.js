@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     Cadastrar: async (req,res) => {
-        const userLogin = await usuario.findOne({ where: {email: req.body.email}});
+
+        console.log(req.body.nome_completo);
+        const userLogin = await usuario.findOne({ where: {nome_completo: req.body.nome_completo}});
 
         if(userLogin != null){
             res.status(401).json({mensager: "Email já está em uso."})

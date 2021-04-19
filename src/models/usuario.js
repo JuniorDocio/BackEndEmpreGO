@@ -1,7 +1,7 @@
 const Sequilize = require('sequelize');
 const database = require('./../config/db');
 
-const Usuario = database.define('usuario',{
+const Usuario = database.define('usuarios',{
     id: {
         type: Sequilize.INTEGER,
         autoIncrement: true,
@@ -11,7 +11,10 @@ const Usuario = database.define('usuario',{
     tipo: {
         type: Sequilize.INTEGER
     },
-    nome: {
+    nome_completo: {
+        type: Sequilize.STRING
+    },
+    nome_usuario: {
         type: Sequilize.STRING
     },
     senha: {
@@ -26,6 +29,10 @@ const Usuario = database.define('usuario',{
     cpf_cnpj: {
         type: Sequilize.STRING
     }
+    },{
+        timestamps: false,
+        createdAt: false,
+        updatedAt: false,
 })
 
 module.exports = Usuario;

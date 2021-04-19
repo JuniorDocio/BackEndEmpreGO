@@ -11,7 +11,7 @@ const DB_USERNAME = process.env.DB_USERNAME || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
 
 const DB_HOST = process.env.DB_URL || 'localhost';
-const DB_PORT = process.env.DB_PORT || '3306';
+const DB_PORT = process.env.DB_PORT || '80';
 
 const DB_URL = `${DB_HOST}:${DB_PORT}`
 
