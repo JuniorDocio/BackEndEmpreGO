@@ -18,6 +18,21 @@ import { Entypo } from '@expo/vector-icons';
 
 
 import { globalColors } from '../../globalStyles';
+import { api } from '../../services/api';
+import { API_LOGIN_ENDPOINT } from '../../config/config';
+import { AxiosResponse } from 'axios';
+
+import { AppStorage } from '../../utils/Storage';
+
+interface LoginData {
+  nome_usuario: string,
+  senha: string
+}
+
+interface AuthResponse {
+  auth: boolean,
+  token: string | boolean
+}
 
 export function Login() {
   const navigation = useNavigation();
@@ -25,18 +40,40 @@ export function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  //const []
+
   //Aviso caso vazios.
   const [usernameWarning, setUsernameWarning] = useState(false);
   const [passwordWarning, setPasswordWarning] = useState(false);
+
   const [secureTextToggle, setSecureTextToggle] = useState<boolean>(true);
   const [eyePasswordIcon, setEyePasswordIcon] = useState<any>('eye');
 
-  function login(): void {
-    setUsernameWarning(!usernameWarning);
-    setPasswordWarning(!passwordWarning); 
+  async function login(): Promise<void> {
+
+    const loginData: LoginData = {
+      nome_usuario: username,
+      senha: password
+    }
+
+    try {
+      const responseData: AxiosResponse<any> = await api.post(API_LOGIN_ENDPOINT, loginData);
+      const authData: AuthResponse = await responseData.data;
+  
+      if(authData.auth) {
+        await AppStorage.storeData("token_jwt", authData.token);
+        navigation.navigate('Dashboard');
+        console.info("LOGADO COM SUCESSO");
+      }
+    }
+    catch(err) {
+        //Mostrar alerta para o usuario saber que o login ou senha estão incorretos.
+        //Não vou redirecionar usuario que nao foi logado.
+        console.error("CREDENCIAIS INCORRETAS", err);
+    }
   }
 
-  function redirectToCadastro() {
+  async function redirectToCadastro() {
     navigation.navigate('Cadastro');
   }
 
