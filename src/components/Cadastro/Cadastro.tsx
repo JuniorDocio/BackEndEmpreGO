@@ -15,16 +15,59 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { styles } from './styles';
 import { globalColors } from '../../globalStyles';
+import { AxiosResponse } from 'axios';
+import { api } from '../../services/api';
+import { API_CADASTRO_ENDPOINT } from '../../config/config';
+import { AuthResponse } from '../../models/AuthResponse';
+import { AppStorage } from '../../utils/Storage';
+import { useNavigation } from '@react-navigation/core';
+
+interface SignUpData {
+  email: string,
+  senha: string,
+  nome_completo: string,
+  nome_usuario: string,
+  cpf_cnpj: string
+}
 
 export function Cadastro() {
+  const navigation = useNavigation();
 
-  const [escolaridade, setEscolaridade] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [cpf, setCpf] = useState<string>('');
+
   const [secureTextToggle, setSecureTextToggle] = useState<boolean>(true);
   const [eyePasswordIcon, setEyePasswordIcon] = useState<any>('eye');
   const [btnSignUpDisabled, setBtnSignUpDisabled] = useState<boolean>(false);
 
-  function signUp() {
+  async function signUp() {
 
+    const signUpData: SignUpData = {
+      nome_usuario: username,
+      cpf_cnpj: cpf,
+      email,
+      nome_completo: fullName,
+      senha: password
+    }
+
+    try {
+      const responseData: AxiosResponse<any> = await api.post(API_CADASTRO_ENDPOINT, signUpData);
+      const authData: AuthResponse = await responseData.data;
+  
+      if(authData.auth) {
+        await AppStorage.storeData("token_jwt", authData.token);
+        navigation.navigate('Dashboard');
+        console.info("LOGADO COM SUCESSO ATRAVÉS DO CADASTRO");
+      }
+    }
+    catch(err) {
+        //Mostrar alerta para o usuario saber que o login ou senha estão incorretos.
+        //Não vou redirecionar usuario que nao foi logado.
+        console.error("Erro ao cadastrar.", err); //placeholder
+    }
   }
 
   function toggleShowPassword() {
@@ -48,7 +91,7 @@ export function Cadastro() {
             placeholder="Nome de Usuário"
             style={styles.formField}
             placeholderTextColor="#FFF"
-            onChangeText={(text: string) => {}}
+            onChangeText={(text: string) => { setUsername(text) }}
           >
           </TextInput>
 
@@ -56,7 +99,7 @@ export function Cadastro() {
             placeholder="Nome Completo"
             style={styles.formField}
             placeholderTextColor="#FFF"
-            onChangeText={(text: string) => {}}
+            onChangeText={(text: string) => { setFullName(text) }}
           ></TextInput>
 
           <View style={styles.passwordFieldContainer}>
@@ -65,7 +108,7 @@ export function Cadastro() {
               style={styles.passwordFormField}
               placeholderTextColor="#FFF"
               secureTextEntry={ secureTextToggle }
-              onChangeText={(text: string) => {}}
+              onChangeText={(text: string) => { setPassword(text) }}
             ></TextInput>
 
             <TouchableOpacity onPress={ toggleShowPassword }>
@@ -77,25 +120,23 @@ export function Cadastro() {
             placeholder="Email"
             style={styles.formField}
             placeholderTextColor="#FFF"
-            onChangeText={(text: string) => {}}
+            onChangeText={(text: string) => { setEmail(text) }}
           ></TextInput>
 
           <TextInput
             placeholder="CPF"
             style={styles.formField}
             placeholderTextColor="#FFF"
-            onChangeText={(text: string) => {}}
+            onChangeText={(text: string) => { setCpf(text) }}
           ></TextInput>
 
           <View style={styles.pickerFormField}>
             <Picker
-              selectedValue={escolaridade}
+              selectedValue="placeholder1"
               style={styles.picker}
-              onValueChange={(itemValue: any, itemIndex: any) => setEscolaridade(itemValue)}
-              
             >
 
-              <Picker.Item label="Placeholder 1" value="placeholder1"/>
+              <Picker.Item label="remover" value="placeholder1"/>
               <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>
               <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>
               <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>

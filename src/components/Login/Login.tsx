@@ -23,15 +23,11 @@ import { API_LOGIN_ENDPOINT } from '../../config/config';
 import { AxiosResponse } from 'axios';
 
 import { AppStorage } from '../../utils/Storage';
+import { AuthResponse } from '../../models/AuthResponse';
 
 interface LoginData {
   nome_usuario: string,
   senha: string
-}
-
-interface AuthResponse {
-  auth: boolean,
-  token: string | boolean
 }
 
 export function Login() {
@@ -39,8 +35,6 @@ export function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  //const []
 
   //Aviso caso vazios.
   const [usernameWarning, setUsernameWarning] = useState(false);
@@ -69,7 +63,7 @@ export function Login() {
     catch(err) {
         //Mostrar alerta para o usuario saber que o login ou senha estão incorretos.
         //Não vou redirecionar usuario que nao foi logado.
-        console.error("CREDENCIAIS INCORRETAS", err);
+        console.error("CREDENCIAIS INCORRETAS", err); //placeholder
     }
   }
 
