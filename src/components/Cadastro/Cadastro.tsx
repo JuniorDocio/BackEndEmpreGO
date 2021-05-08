@@ -22,6 +22,8 @@ import { AuthResponse } from '../../models/AuthResponse';
 import { AppStorage } from '../../utils/Storage';
 import { useNavigation } from '@react-navigation/core';
 
+import { Snackbar } from 'react-native-paper';
+
 interface SignUpData {
   email: string,
   senha: string,
@@ -36,12 +38,15 @@ export function Cadastro() {
   const [username, setUsername] = useState<string>('');
   const [fullName, setFullName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
 
   const [secureTextToggle, setSecureTextToggle] = useState<boolean>(true);
   const [eyePasswordIcon, setEyePasswordIcon] = useState<any>('eye');
   const [btnSignUpDisabled, setBtnSignUpDisabled] = useState<boolean>(false);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('Erro desconhecido');
 
   async function signUp() {
 
@@ -53,21 +58,26 @@ export function Cadastro() {
       senha: password
     }
 
-    try {
-      const responseData: AxiosResponse<any> = await api.post(API_CADASTRO_ENDPOINT, signUpData);
-      const authData: AuthResponse = await responseData.data;
-  
+    if(signUpData.senha !== confirmPassword) {
+      setErrorMessage("As senhas não coincidem");
+      setErrorVisible(true);
+      return;
+    }
+
+    await api.post(API_CADASTRO_ENDPOINT, signUpData)
+    .then(async (response: AxiosResponse<any>) => {
+      const authData: AuthResponse = response.data;
+
       if(authData.auth) {
         await AppStorage.storeData("token_jwt", authData.token);
         navigation.navigate('Dashboard');
         console.info("LOGADO COM SUCESSO ATRAVÉS DO CADASTRO");
       }
-    }
-    catch(err) {
-        //Mostrar alerta para o usuario saber que o login ou senha estão incorretos.
-        //Não vou redirecionar usuario que nao foi logado.
-        console.error("Erro ao cadastrar.", err); //placeholder
-    }
+    })
+    .catch((data) => {
+      setErrorMessage(data.response.data.mensager);
+      setErrorVisible(true);
+    });
   }
 
   function toggleShowPassword() {
@@ -116,6 +126,16 @@ export function Cadastro() {
             </TouchableOpacity>
           </View>
 
+          <View style={styles.passwordFieldContainer}>
+            <TextInput
+              placeholder="Confirme a Senha"
+              style={styles.passwordFormField}
+              placeholderTextColor="#FFF"
+              secureTextEntry={ true }
+              onChangeText={(text: string) => { setConfirmPassword(text) }}
+            ></TextInput>
+          </View>
+
           <TextInput
             placeholder="Email"
             style={styles.formField}
@@ -130,28 +150,30 @@ export function Cadastro() {
             onChangeText={(text: string) => { setCpf(text) }}
           ></TextInput>
 
-          <View style={styles.pickerFormField}>
-            <Picker
-              selectedValue="placeholder1"
-              style={styles.picker}
-            >
-
-              <Picker.Item label="remover" value="placeholder1"/>
-              <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>
-              <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>
-              <Picker.Item label="PLACEHOLDER 2" value="placeholder2"/>
-
-            </Picker>
-          </View>
-
         </View>
 
         <View style={styles.btnsView}>
           <TouchableOpacity style={styles.btnSignUp} onPress={signUp} disabled={ btnSignUpDisabled }>
-            <Text style={styles.btnSignUpText}>Criar Conta!</Text>
+            <Text style={styles.btnSignUpText}>GO!</Text>
           </TouchableOpacity>
 
         </View>
+
+
+        <Snackbar
+          visible={errorVisible}
+          onDismiss={() => {}}
+          action={{
+            label: 'OK',
+            onPress: () => {
+              setErrorVisible(false)
+            },
+          }}
+          style={{backgroundColor: "white"}}
+        >
+          <View><Text>{errorMessage}</Text></View>
+        </Snackbar>
+
       </KeyboardAvoidingView>
     </LinearGradient>
   )
