@@ -14,9 +14,6 @@ const Usuario = database.define('usuarios',{
     nome_completo: {
         type: Sequilize.STRING
     },
-    nome_usuario: {
-        type: Sequilize.STRING
-    },
     senha: {
         type: Sequilize.STRING
     },
