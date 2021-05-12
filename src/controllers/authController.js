@@ -24,7 +24,7 @@ module.exports = {
     Login: async (req,res) => {
         const {email,senha} = req.body;
 
-        if(email==="" || senha){
+        if(email==="" || senha===""){
             res.status(401).json({messenge:'e-mail ou senha não informado'})
             return;
         }

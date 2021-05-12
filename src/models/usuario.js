@@ -23,6 +23,9 @@ const Usuario = database.define('usuarios',{
     situacao: {
         type: Sequilize.STRING
     },
+    imagemPefil: {
+        type: Sequilize.STRING
+    },
     cpf_cnpj: {
         type: Sequilize.STRING
     }
