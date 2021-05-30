@@ -10,6 +10,7 @@ module.exports = {
     Visualizar: async(req,res) => {
         const user = await usuario.findOne({ where: {id: req.id}});
         user.senha = null;
+        user.imagemPefil = (__dirname+user.imagemPefil);
         return res.status(200).send({user: user});
     },
     
