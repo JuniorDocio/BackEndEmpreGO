@@ -9,6 +9,6 @@ const userController = require('../controllers/usuarioController')
 router.use(middleware);
 router.put('/perfil',userController.Editar);
 router.get('/perfil',userController.Visualizar);
-router.post('/pesrfil/upload-image',upload.single("imagem"),userController.UploadImage);
+router.post('/perfil/upload-image',upload.single("imagem"),userController.UploadImage);
 
 module.exports = router;

@@ -8,9 +8,10 @@ module.exports = {
     },
 
     Visualizar: async(req,res) => {
+        const host = process.env.hostImage || 'http://localhost:3000/';
         const user = await usuario.findOne({ where: {id: req.id}});
         user.senha = null;
-        user.imagemPefil = (__dirname+user.imagemPefil);
+        user.imagemPefil = host+user.imagemPefil.replace('uploads\\','');
         return res.status(200).send({user: user});
     },
     
