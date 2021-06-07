@@ -1,7 +1,7 @@
 const Sequilize = require('sequelize');
-const database = require('./../config/db');
+const database = require('../config/db');
 
-const Emprego = database.define('trabalho',{
+const Emprego = database.define('trabalhos',{
     id: {
         type: Sequilize.INTEGER,
         autoIncrement: true,
