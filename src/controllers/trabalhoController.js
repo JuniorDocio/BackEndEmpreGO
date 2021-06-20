@@ -1,4 +1,5 @@
 const trabalho = require('../models/trabalho');
+const usuario = require('./../models/usuario');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -14,14 +15,23 @@ module.exports = {
     },
 
     Listar: async (req,res) => {
-        const trabalhos = await trabalho.findAll({ where: {situacao: '1'}});
+        const trabalhos = await trabalho.findAll({ where: {situacao: '1'},raw: true});
+        for await (let num of trabalhos) {
+            num.criadorUsuario = await usuario.findOne({ where: {id: num.criador}});
+            num.candidato = await usuario.findOne({ where: {id: num.id_usuario_candidatado}});
+        }
+       
         return res.status(200).send(trabalhos);
     },
 
     VerTrabalho: async (req,res) => {
         if(!req.params.id || req.params.id == '')
             return res.status(200).send({Mensage: 'Id não informado ou em branco'});
-        const trabalhoUnico = await trabalho.findOne({ where: {situacao: '1',id: req.params.id}});
+        const trabalhoUnico = await trabalho.findOne({ where: {situacao: '1',id: req.params.id},raw: true});
+        if(trabalhoUnico){
+            trabalhoUnico.criadorUsuario = await usuario.findOne({ where: {id: trabalhoUnico.criador}});
+            trabalhoUnico.candidato = await usuario.findOne({ where: {id: trabalhoUnico.id_usuario_candidatado}});
+        }
         return res.status(200).send(trabalhoUnico);
     },
 
@@ -38,9 +48,13 @@ module.exports = {
                                 { [Op.like]: queryString } 
                             } 
                         ]
-                    }
+                    },raw: true
                 }
             )
+        for await (let num of trabalhos) {
+            num.criadorUsuario = await usuario.findOne({ where: {id: num.criador}});
+            num.candidato = await usuario.findOne({ where: {id: num.id_usuario_candidatado}});
+        }
         return res.status(200).send(trabalhos);
     },
     

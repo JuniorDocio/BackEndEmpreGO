@@ -22,12 +22,20 @@ module.exports = {
     },
 
     MeusTrabalhos: async(req,res) => {
-        const trabalhos = await trabalho.findAll({ where: {id_usuario_candidatado: req.id}});
+        const trabalhos = await trabalho.findAll({ where: {id_usuario_candidatado: req.id},raw: true});
+        for await (let num of trabalhos) {
+            num.criadorUsuario = await usuario.findOne({ where: {id: num.criador}});
+            num.candidato = await usuario.findOne({ where: {id: num.id_usuario_candidatado}});
+        }
         return res.status(200).send(trabalhos);
     },
 
     MeusTrabalhosCriados: async(req,res) => {
-        const trabalhos = await trabalho.findAll({ where: {criador: req.id}});
+        const trabalhos = await trabalho.findAll({ where: {criador: req.id},raw: true});
+        for await (let num of trabalhos) {
+            num.criadorUsuario = await usuario.findOne({ where: {id: num.criador}});
+            num.candidato = await usuario.findOne({ where: {id: num.id_usuario_candidatado}});
+        }
         return res.status(200).send(trabalhos);
     }
 
