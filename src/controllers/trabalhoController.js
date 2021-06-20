@@ -66,5 +66,15 @@ module.exports = {
         trabalhoUnico.id_usuario_candidatado = req.id;
         trabalhoUnico.save();
         return res.status(200).send(trabalhoUnico);
+    },
+
+    FecharTrabalho: async (req,res) => {
+        const trabalhoUnico = await trabalho.findOne({ where: {situacao: '1',id: req.body.id_trabalho}});
+        if(!trabalhoUnico){
+            return res.status(301).send({message: 'Alguem Já aceitou esse trabalho, ou ele não extá mais diponivel'});
+        }
+        trabalhoUnico.situacao = 0;
+        trabalhoUnico.save();
+        return res.status(200).send({message: 'Trabalho fechado'});
     }
 }
