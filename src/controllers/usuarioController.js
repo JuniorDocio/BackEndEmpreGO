@@ -1,4 +1,5 @@
 const usuario = require('./../models/usuario');
+const trabalho = require('../models/trabalho');
 const multer  = require('multer')
 
 module.exports = {
@@ -18,6 +19,16 @@ module.exports = {
     UploadImage: async(req,res) => {
         const user = await usuario.update({imagemPefil: req.file.path},{ where: {id: req.id}});
         return res.status(200).send({user: user});
-    } 
+    },
+
+    MeusTrabalhos: async(req,res) => {
+        const trabalhos = await trabalho.findAll({ where: {id_usuario_candidatado: req.id}});
+        return res.status(200).send(trabalhos);
+    },
+
+    MeusTrabalhosCriados: async(req,res) => {
+        const trabalhos = await trabalho.findAll({ where: {criador: req.id}});
+        return res.status(200).send(trabalhos);
+    }
 
 }

@@ -39,6 +39,9 @@ const Emprego = database.define('trabalhos',{
     criador: {
         type: Sequilize.INTEGER
     },
+    id_usuario_candidatado: {
+        type: Sequilize.INTEGER
+    },
     },{
         timestamps: false,
         createdAt: false,

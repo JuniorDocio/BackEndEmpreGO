@@ -1,4 +1,6 @@
 const trabalho = require('../models/trabalho');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
     Adicionar: async (req,res) => {
@@ -24,10 +26,31 @@ module.exports = {
     },
 
     BuscarTrabalho: async (req,res) => {
-        
+        const queryString = "%"+req.body.busca+"%";
+        const trabalhos = await trabalho.findAll(
+                { where:
+                    {[Op.or]:
+                        [ 
+                            { titulo: 
+                                { [Op.like]: queryString } 
+                            },
+                            { descricao: 
+                                { [Op.like]: queryString } 
+                            } 
+                        ]
+                    }
+                }
+            )
+        return res.status(200).send(trabalhos);
     },
-
+    
     AceitarTrabalho: async (req,res) => {
-        
-    },
+        const trabalhoUnico = await trabalho.findOne({ where: {situacao: '1',id: req.body.id_trabalho,id_usuario_candidatado: {[Op.is]: null}}});
+        if(!trabalhoUnico){
+            return res.status(301).send({message: 'Alguem Já aceitou esse trabalho, ou ele não extá mais diponivel'});
+        }
+        trabalhoUnico.id_usuario_candidatado = req.id;
+        trabalhoUnico.save();
+        return res.status(200).send(trabalhoUnico);
+    }
 }

@@ -8,6 +8,5 @@ const authController = require('../controllers/authController')
 router.post('/cadastrar',authController.Cadastrar);
 router.post('/login',authController.Login);
 router.post('/remember',authController.Remember);
-router.post('/changePassword',authController.ChangePassword);
 
 module.exports = router;

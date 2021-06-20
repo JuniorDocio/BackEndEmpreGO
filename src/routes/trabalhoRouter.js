@@ -9,5 +9,7 @@ router.use(middleware);
 router.post('/trabalho-adicionar',trabalhoController.Adicionar);
 router.get('/trabalhos',trabalhoController.Listar);
 router.get('/trabalho/:id',trabalhoController.VerTrabalho);
+router.get('/trabalhos/buscar',trabalhoController.BuscarTrabalho);
+router.post('/trabalhos/aceitar',trabalhoController.AceitarTrabalho);
 
 module.exports = router;
