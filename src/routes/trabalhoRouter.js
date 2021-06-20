@@ -11,6 +11,6 @@ router.get('/trabalhos',trabalhoController.Listar);
 router.get('/trabalho/:id',trabalhoController.VerTrabalho);
 router.get('/trabalhos/buscar',trabalhoController.BuscarTrabalho);
 router.post('/trabalhos/aceitar',trabalhoController.AceitarTrabalho);
-router.post('/trabalhos/fechar',trabalhoController.FecharTrabalho);
+router.delete('/trabalhos/fechar',trabalhoController.FecharTrabalho);
 
 module.exports = router;
