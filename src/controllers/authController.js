@@ -11,6 +11,7 @@ module.exports = {
         }
         
         const user = await usuario.create(req.body);
+        await user.update({imagemPefil:'default-user-image.png'});
 
         if(user==null){
             res.status(404).json({mensager: "Não foi possivel cadastrar."})
